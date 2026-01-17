@@ -1,9 +1,13 @@
 const express = require("express");
 const routes = require("./routes");
+const passport = require("./config/passport");
+
 
 const app = express();
 
 app.use(express.json());
+app.use(passport.initialize());
+
 
 app.use("/api", routes);
 
