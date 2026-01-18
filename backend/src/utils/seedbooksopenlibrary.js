@@ -39,12 +39,20 @@ const seedBooks = async () => {
         const title = item.title.trim();
 
         if (!bookMap.has(title)) {
-          bookMap.set(title, {
-            title,
-            author: item.author_name.slice(0, 3).join(", "),
-            price: Math.floor(Math.random() * (999 - 199 + 1)) + 199,
-            averageRating: 0
-          });
+         const coverId = item.cover_i;
+
+const imageUrl = coverId
+  ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
+  : "https://via.placeholder.com/300x450?text=No+Cover";
+
+bookMap.set(title, {
+  title,
+  author: item.author_name.slice(0, 3).join(", "),
+  price: Math.floor(Math.random() * (999 - 199 + 1)) + 199,
+  averageRating: 0,
+  imageUrl,
+});
+
         }
       });
     }
