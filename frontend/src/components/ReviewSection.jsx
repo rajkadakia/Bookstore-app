@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/client';
 import { useAuth } from '../context/AuthContext';
-import { Star, Send, User } from 'lucide-react';
+import { BookOpen, Send, User } from 'lucide-react';
 
-const ReviewSection = ({ bookId, onReviewAdded }) => {
+const ReviewSection = ({ bookId, onReviewAdded, initialRating = 0, initialCount = 0 }) => {
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
@@ -42,12 +42,14 @@ const ReviewSection = ({ bookId, onReviewAdded }) => {
   const reviewsArray = Array.isArray(reviews) ? reviews : [];
 
   const stats = {
-    total: reviewsArray.length,
-    average: reviewsArray.length > 0 ? (reviewsArray.reduce((acc, r) => acc + (r.rating || 0), 0) / reviewsArray.length).toFixed(1) : 0,
+    total: reviewsArray.length > 0 ? reviewsArray.length : initialCount,
+    average: reviewsArray.length > 0 
+      ? (reviewsArray.reduce((acc, r) => acc + (Number(r.rating) || 0), 0) / reviewsArray.length).toFixed(1) 
+      : Number(initialRating).toFixed(1),
     distribution: [5, 4, 3, 2, 1].map(star => ({
       star,
-      count: reviewsArray.filter(r => r.rating === star).length,
-      percentage: reviewsArray.length > 0 ? (reviewsArray.filter(r => r.rating === star).length / reviewsArray.length) * 100 : 0
+      count: reviewsArray.filter(r => Number(r.rating) === star).length,
+      percentage: reviewsArray.length > 0 ? (reviewsArray.filter(r => Number(r.rating) === star).length / reviewsArray.length) * 100 : 0
     }))
   };
 
@@ -87,14 +89,14 @@ const ReviewSection = ({ bookId, onReviewAdded }) => {
         <div className="col-md-6 text-md-end">
           <div className="d-inline-flex align-items-center bg-light p-3 rounded-4 shadow-sm">
             <div className="me-3">
-              <div className="display-5 fw-bold text-emerald mb-0">{stats.average}</div>
+              <div className="display-5 fw-bold text-coffee mb-0">{stats.average}</div>
               <div className="text-muted small">out of 5.0</div>
             </div>
             <div className="vr mx-3"></div>
             <div>
               <div className="d-flex mb-1">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={18} className={i < Math.floor(stats.average) ? "text-warning fill-warning" : "text-light"} />
+                  <BookOpen key={i} size={18} className={i < Math.floor(stats.average) ? "text-coffee" : "text-light"} strokeWidth={2} />
                 ))}
               </div>
               <div className="fw-bold small">{stats.total} total reviews</div>
@@ -110,11 +112,11 @@ const ReviewSection = ({ bookId, onReviewAdded }) => {
             {stats.distribution.map((item) => (
               <div key={item.star} className="d-flex align-items-center mb-3">
                 <div className="small fw-bold me-3" style={{ minWidth: '50px' }}>{item.star} Stars</div>
-                <div className="progress flex-grow-1 rounded-pill" style={{ height: '8px' }}>
+                <div className="progress flex-grow-1 rounded-pill" style={{ height: '8px', backgroundColor: '#E6DCCD' }}>
                   <div 
-                    className="progress-bar bg-warning rounded-pill" 
+                    className="progress-bar rounded-pill" 
                     role="progressbar" 
-                    style={{ width: `${item.percentage}%` }}
+                    style={{ width: `${item.percentage}%`, backgroundColor: '#795548' }}
                   ></div>
                 </div>
                 <div className="small text-muted ms-3" style={{ minWidth: '35px' }}>{item.count}</div>
@@ -125,18 +127,19 @@ const ReviewSection = ({ bookId, onReviewAdded }) => {
 
         <div className="col-lg-8">
           {user ? (
-            <div className="card border-0 shadow-sm p-4 h-100 bg-white rounded-4 border-start border-emerald border-4">
+            <div className="card border-0 shadow-sm p-4 h-100 bg-white rounded-4 border-start border-coffee border-4">
               <h5 className="fw-bold mb-3 d-flex align-items-center">
-                <Send size={18} className="text-emerald me-2" /> Write a Review
+                <Send size={18} className="text-coffee me-2" /> Write a Review
               </h5>
               <form onSubmit={handleSubmit}>
                 <div className="d-flex gap-2 mb-3">
                   {[1, 2, 3, 4, 5].map((s) => (
-                    <Star 
+                    <BookOpen 
                       key={s} 
                       size={28} 
-                      className={`cursor-pointer transition-all ${s <= rating ? "text-warning fill-warning scale-110" : "text-light"}`}
+                      className={`cursor-pointer transition-all ${s <= rating ? "text-coffee scale-110" : "text-mocha opacity-25"}`}
                       onClick={() => setRating(s)}
+                      strokeWidth={2}
                       style={{ cursor: 'pointer' }}
                     />
                   ))}
@@ -151,17 +154,17 @@ const ReviewSection = ({ bookId, onReviewAdded }) => {
                     required
                   ></textarea>
                 </div>
-                <button type="submit" className="btn btn-emerald px-4 py-2 rounded-pill fw-bold">
+                <button type="submit" className="btn btn-coffee px-4 py-2 rounded-pill fw-bold">
                   Submit Review
                 </button>
               </form>
             </div>
           ) : (
-            <div className="card border-0 shadow-sm p-5 h-100 bg-emerald text-white rounded-4 text-center d-flex flex-column justify-content-center">
+            <div className="card border-0 shadow-sm p-5 h-100 bg-coffee-soft text-coffee rounded-4 text-center d-flex flex-column justify-content-center">
               <h5 className="fw-bold mb-3">Share Your Thoughts!</h5>
               <p className="mb-4 opacity-75">Sign in to leave a review and help other readers discover this masterpiece.</p>
               <div>
-                <a href="/login" className="btn btn-light px-5 py-2 rounded-pill fw-bold text-emerald">Login Now</a>
+                <a href="/login" className="btn btn-coffee px-5 py-2 rounded-pill fw-bold">Login Now</a>
               </div>
             </div>
           )}
@@ -171,23 +174,23 @@ const ReviewSection = ({ bookId, onReviewAdded }) => {
       <div className="reviews-list">
         {loading ? (
           <div className="text-center py-5">
-            <div className="spinner-border text-emerald" />
+            <div className="spinner-border text-coffee" />
             <p className="mt-3 text-muted">Loading reviews...</p>
           </div>
         ) : reviews.length > 0 ? (
           <div className="row">
             {reviews.map((review) => (
               <div key={review._id} className="col-md-6 mb-4">
-                <div className="card border-0 shadow-sm p-4 h-100 bg-white rounded-4 review-card hover-lift">
+                <div className="card border-0 shadow-sm p-4 h-100 bg-white rounded-4 review-card">
                   <div className="d-flex align-items-center mb-3">
-                    <div className="bg-emerald-soft p-3 rounded-circle me-3">
-                      <User size={20} className="text-emerald" />
+                    <div className="bg-coffee-soft p-3 rounded-circle me-3">
+                      <User size={20} className="text-coffee" />
                     </div>
                     <div>
                       <h6 className="fw-bold mb-0">{review.userId?.name || 'Anonymous Reader'}</h6>
                       <div className="d-flex align-items-center">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} size={12} className={i < review.rating ? "text-warning fill-warning" : "text-light"} />
+                          <BookOpen key={i} size={12} className={i < review.rating ? "text-coffee" : "text-light"} strokeWidth={2} />
                         ))}
                         <span className="ms-2 x-small text-muted">
                           {new Date(review.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}

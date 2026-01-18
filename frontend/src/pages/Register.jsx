@@ -38,10 +38,10 @@ const Register = () => {
         <div className="col-md-5">
           <div className="card p-4 border-0 shadow-lg">
             <div className="text-center mb-4">
-              <div className="bg-emerald-soft p-3 rounded-circle d-inline-block mb-3">
-                <UserPlus className="text-emerald" size={32} />
+              <div className="bg-coffee-soft p-3 rounded-circle d-inline-block mb-3">
+                <UserPlus className="text-coffee" size={32} />
               </div>
-              <h2 className="fw-bold">Create Account</h2>
+              <h2 className="fw-bold">Create a Library Card</h2>
               <p className="text-muted">Join our community of book lovers</p>
             </div>
 
@@ -58,7 +58,7 @@ const Register = () => {
                     name="name"
                     type="text" 
                     className="form-control border-start-0 ps-0" 
-                    placeholder="John Doe"
+                    placeholder="Name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -104,7 +104,7 @@ const Register = () => {
 
               <button 
                 type="submit" 
-                className="btn btn-primary w-100 py-2 mb-3 fw-bold"
+                className="btn btn-coffee w-100 py-2 mb-3 fw-bold"
                 disabled={loading}
               >
                 {loading ? 'Creating Account...' : 'Sign Up'}
@@ -117,14 +117,14 @@ const Register = () => {
 
               <a 
                 href="http://localhost:5000/api/auth/google" 
-                className="btn btn-outline-light border text-dark w-100 py-2 rounded mb-4 fw-semibold d-flex align-items-center justify-content-center"
+                className="btn btn-outline-light border text-coffee w-100 py-2 rounded mb-4 fw-semibold d-flex align-items-center justify-content-center"
               >
-                <Chrome size={18} className="me-2 text-primary" /> Sign up with Google
+                <Chrome size={18} className="me-2" /> Sign up with Google
               </a>
 
               <div className="text-center">
                 <p className="text-muted small mb-0">
-                  Already have an account? <Link to="/login" className="text-emerald fw-bold text-decoration-none">Sign In</Link>
+                  Already have an account? <Link to="/login" className="text-coffee fw-bold text-decoration-none">Sign In</Link>
                 </p>
               </div>
             </form>

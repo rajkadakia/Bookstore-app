@@ -1,36 +1,49 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, isNew, isSale }) => {
   const { addToCart } = useCart();
+  const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="col-md-3 mb-4">
-      <div className="card h-100 border-0 shadow-sm overflow-hidden p-2">
-        <Link to={`/books/${book._id}`} className="text-decoration-none text-dark">
-          <img 
-            src={book.imageUrl || 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400'} 
-            className="book-img rounded-3" 
-            alt={book.title} 
-          />
-        </Link>
-        <div className="card-body px-2">
-          <Link to={`/books/${book._id}`} className="text-decoration-none text-dark">
-            <h5 className="card-title fw-bold text-truncate mb-1">{book.title}</h5>
+    <div className="col-md-3 col-6 mb-4">
+      <div className="card h-100 border-0 bg-transparent hover-lift">
+        <div className="position-relative mb-3">
+          <Link to={`/books/${book._id}`}>
+             <div className="ratio ratio-3x4 rounded-3 overflow-hidden shadow-sm">
+                <img 
+                  src={!imgError && book.imageUrl ? book.imageUrl : 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&q=80&w=400'} 
+                  className="object-fit-cover w-100 h-100" 
+                  alt={book.title}
+                  onError={() => setImgError(true)} 
+                />
+             </div>
           </Link>
-          <p className="card-text text-muted small mb-2">{book.author}</p>
-          <div className="d-flex align-items-center mb-3">
-            <Star size={16} className="text-warning fill-warning me-1" />
-            <span className="small fw-semibold">{book.averageRating || '4.5'}</span>
-          </div>
-          <div className="d-flex justify-content-between align-items-center mt-auto">
-            <span className="fs-5 fw-bold text-emerald">${book.price}</span>
+          {isNew && <span className="position-absolute top-0 end-0 m-2 badge bg-coffee text-white rounded-0 fw-normal px-2" style={{backgroundColor: '#795548'}}>New</span>}
+          {isSale && <span className="position-absolute top-0 end-0 m-2 badge rounded-0 fw-normal px-2" style={{backgroundColor: '#4E342E', color: '#F9F5F0'}}>-10%</span>}
+        </div>
+        
+        <div className="card-body p-0">
+          <Link to={`/books/${book._id}`} className="text-decoration-none text-charcoal">
+            <h5 className="h6 fw-bold mb-1 text-truncate">{book.title}</h5>
+          </Link>
+          <p className="text-muted small mb-2 text-truncate">{book.author}</p>
+          
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex align-items-center gap-2">
+              <span className="fw-bold text-dark">₹{book.price}</span>
+              <div className="d-flex align-items-center text-mocha x-small ms-1">
+                <BookOpen size={12} className="me-1 opacity-75" />
+                <span className="fw-bold">{book.averageRating || '0.0'}</span>
+              </div>
+            </div>
             <button 
-              className="btn btn-primary btn-sm rounded-pill"
+              className="btn btn-sm btn-coffee px-3 rounded-1"
               onClick={() => addToCart(book._id)}
             >
-              <ShoppingCart size={18} />
+              Buy
             </button>
           </div>
         </div>

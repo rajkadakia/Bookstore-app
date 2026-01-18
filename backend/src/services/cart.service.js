@@ -28,8 +28,15 @@ const addToCart = async (userId, bookId, quantity = 1) => {
   );
 
   if (itemIndex > -1) {
-    cart.items[itemIndex].quantity += quantity;
+    const newQuantity = cart.items[itemIndex].quantity + quantity;
+    if (newQuantity > 10) {
+      throw new Error("Out of Stock");
+    }
+    cart.items[itemIndex].quantity = newQuantity;
   } else {
+    if (quantity > 10) {
+      throw new Error("Out of Stock");
+    }
     cart.items.push({ bookId, quantity });
   }
 

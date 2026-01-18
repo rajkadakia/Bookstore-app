@@ -3,7 +3,11 @@ const Order = require("../models/order.model");
 const Book = require("../models/book.model");
 const mockPayment = require("../utils/mockPayment");
 
-const placeOrder = async (userId) => {
+const placeOrder = async (userId, addressId) => {
+  if (!addressId) {
+    throw new Error("Address identifier is required to place an order");
+  }
+
   const cart = await Cart.findOne({ userId }).populate("items.bookId");
 
   if (!cart || cart.items.length === 0) {
@@ -30,6 +34,7 @@ const placeOrder = async (userId) => {
     items: orderItems,
     totalAmount,
     paymentStatus: paymentResult.status,
+    addressId,
   });
 
   cart.items = [];

@@ -11,6 +11,8 @@ const BookDetails = () => {
   const { addToCart } = useCart();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imgError, setImgError] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   const fetchBookDetails = async () => {
     try {
@@ -33,7 +35,7 @@ const BookDetails = () => {
 
   if (loading) return (
     <div className="container py-5 mt-5 text-center">
-      <div className="spinner-border text-emerald" role="status">
+      <div className="spinner-border text-coffee" role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
     </div>
@@ -42,7 +44,7 @@ const BookDetails = () => {
   if (!book) return (
     <div className="container py-5 mt-5 text-center">
       <h2 className="fw-bold">Book not found</h2>
-      <button className="btn btn-primary mt-3" onClick={() => navigate('/')}>
+      <button className="btn btn-coffee mt-3" onClick={() => navigate('/')}>
         Back to Library
       </button>
     </div>
@@ -56,35 +58,27 @@ const BookDetails = () => {
 
       <div className="row g-5">
         <div className="col-md-5">
-          <div className="card border-0 shadow-lg overflow-hidden p-3 bg-white hover-lift">
+          <div className="card border-0 shadow-lg overflow-hidden p-3 bg-white">
+
+
             <img 
-              src={book.imageUrl || 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600'} 
+              src={!imgError && book.imageUrl ? book.imageUrl : 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&q=80&w=600'} 
               className="img-fluid rounded-4 shadow-sm" 
               alt={book.title} 
               style={{ width: '100%', height: '550px', objectFit: 'cover' }}
+              onError={() => setImgError(true)}
             />
           </div>
         </div>
 
         <div className="col-md-7 ps-md-5">
           <div className="mb-4">
-            <span className="badge bg-emerald-soft text-emerald px-3 py-2 rounded-pill mb-2">Editor's Choice</span>
             <h1 className="display-4 fw-bold mb-2">{book.title}</h1>
-            <h4 className="text-muted fw-light mb-4 text-emerald">by {book.author}</h4>
+            <h4 className="text-muted fw-light mb-4 text-coffee">by {book.author}</h4>
           </div>
 
-          <div className="d-flex align-items-center gap-4 mb-4 bg-light p-3 rounded-4 shadow-sm border border-white">
-            <div className="d-flex align-items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={20} className={i < Math.floor(book.averageRating || 0) ? "text-warning fill-warning" : "text-light"} />
-              ))}
-              <span className="ms-2 fw-bold fs-5">{book.averageRating || '0'}</span>
-              <a href="#reviews" className="ms-2 text-emerald x-small text-decoration-none hover-underline">
-                ({book.reviewCount || 0} reviews)
-              </a>
-            </div>
-            <div className="vr opacity-10"></div>
-            <div className="text-emerald fw-bold fs-3">${book.price}</div>
+          <div className="d-flex align-items-center mb-3">
+             <span className="h2 fw-bold text-coffee font-serif">₹{book.price}</span>
           </div>
 
           <p className="lead text-muted mb-5 lh-lg font-serif">
@@ -94,26 +88,41 @@ const BookDetails = () => {
           </p>
 
           <div className="glass-card mb-5 d-flex align-items-start gap-3 bg-white border-0 shadow-sm rounded-4">
-            <Quote size={24} className="text-emerald mt-1 opacity-25" />
-            <p className="mb-0 italic text-muted lh-base">"A literary triumph. One of the most important books of our generation. A deep dive into the soul of modern literature." — The Sunday Times</p>
+            <Quote size={20} className="text-coffee mt-1 opacity-25" />
+            <p className="mb-0 italic text-muted lh-base small">"A literary triumph. One of the most important books of our generation. A deep dive into the soul of modern literature." — The Sunday Times</p>
           </div>
 
-          <div className="d-grid gap-3 d-md-flex">
+          <div className="d-flex align-items-center gap-3">
+            <div className="d-flex align-items-center gap-2">
+               <span className="text-coffee fw-semibold uppercase x-small" style={{ letterSpacing: '1px' }}>Qty</span>
+               <input 
+                 type="number" 
+                 min="1" 
+                 value={quantity}
+                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                 className="form-control text-center text-coffee fw-bold border-1 small" 
+                 style={{ width: '60px', height: '40px', backgroundColor: '#F9F5F0', borderColor: '#E6DCCD' }}
+               />
+            </div>
+            
             <button 
-              className="btn btn-emerald btn-lg px-5 py-3 rounded-pill d-flex align-items-center justify-content-center shadow-sm"
-              onClick={() => addToCart(book._id || book.id)}
+              className="btn btn-coffee px-4 py-2 rounded-0 d-flex align-items-center justify-content-center shadow-sm"
+              style={{ height: '40px', width: '160px', backgroundColor: 'var(--text-coffee)', borderColor: 'var(--text-coffee)' }}
+              onClick={() => addToCart(book._id || book.id, quantity)}
             >
-              <ShoppingCart size={20} className="me-2" /> Add to Cart
-            </button>
-            <button className="btn btn-outline-emerald btn-lg px-5 py-3 rounded-pill">
-              Add to Wishlist
+              <span className="fw-semibold text-white uppercase text-spacing-1 small">Add to Cart</span>
             </button>
           </div>
         </div>
       </div>
 
       <div id="reviews" className="mt-5">
-        <ReviewSection bookId={book._id || book.id} onReviewAdded={fetchBookDetails} />
+        <ReviewSection 
+          bookId={book._id || book.id} 
+          onReviewAdded={fetchBookDetails} 
+          initialRating={book.averageRating}
+          initialCount={book.reviewCount}
+        />
       </div>
     </div>
   );

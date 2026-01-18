@@ -34,12 +34,27 @@ export const CartProvider = ({ children }) => {
       alert('Please login to add items to cart');
       return;
     }
+
+    // Client-side validation: Check current quantity in cart
+    const existingItem = cart?.items?.find(item => (item.bookId?._id || item.bookId) === bookId);
+    const currentQty = existingItem ? existingItem.quantity : 0;
+    
+    if (currentQty + quantity > 10) {
+      alert('Out of Stock');
+      return;
+    }
+
     try {
       await api.post('/cart/add', { bookId, quantity });
       await fetchCart();
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      alert('Failed to add to cart');
+      const errorMsg = error.response?.data?.error || error.response?.data?.message;
+      if (errorMsg === 'Out of Stock') {
+        alert('Out of Stock');
+      } else {
+        console.error('Error adding to cart:', error);
+        alert('Failed to add to cart');
+      }
     }
   };
 

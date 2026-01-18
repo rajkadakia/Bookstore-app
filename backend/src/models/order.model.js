@@ -41,6 +41,11 @@ const orderSchema = new mongoose.Schema(
       enum: ["SUCCESS", "FAILED"],
       required: true,
     },
+    addressId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address",
+      required: true,
+    },
   },
   { timestamps: true }
 );

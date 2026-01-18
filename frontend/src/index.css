@@ -1,22 +1,83 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@400;500;600;700&display=swap");
 
 :root {
-  --primary-color: #064e3b; /* Deep Emerald */
-  --secondary-color: #d97706; /* Soft Gold */
-  --accent-color: #78350f;
-  --bg-cream: #fdfcf7;
-  --text-charcoal: #1f2937;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
-  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.1);
+  --bg-beige: #F9F5F0;     /* Light Cream/Paper */
+  --bg-dark-beige: #E6DCCD; /* Darker Beige for accents */
+  --text-coffee: #4E342E;   /* Deep Brown text */
+  --text-mocha: #795548;    /* Lighter brown for secondary text */
+  --accent-sage: #8D6E63;   /* Muted earthy accent */
+  --wood-texture: #D7CCC8;  /* For bookshelf borders */
+  --paper-white: #FFFFFF;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-cute: "Quicksand", sans-serif;
+  --shadow-book: 5px 5px 15px rgba(62, 39, 35, 0.15); /* Soft book shadow */
 }
 
 body {
-  font-family: "Inter", sans-serif;
-  background-color: var(--bg-cream);
-  color: var(--text-charcoal);
+  font-family: var(--font-sans);
+  background-color: var(--bg-beige);
+  color: var(--text-coffee);
   min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-font {
+  font-family: var(--font-serif);
+  color: var(--text-coffee);
+  letter-spacing: -0.5px;
+}
+
+/* Cozy Buttons */
+.btn-primary {
+  background-color: var(--text-coffee);
+  border-color: var(--text-coffee);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-family: var(--font-serif);
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: var(--text-mocha);
+  border-color: var(--text-mocha);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(78, 52, 46, 0.2);
+}
+
+.btn-outline-primary {
+  color: var(--text-coffee);
+  border-color: var(--text-coffee);
+  border-radius: 8px;
+  font-family: var(--font-serif);
+}
+.btn-outline-primary:hover {
+  background-color: var(--bg-dark-beige);
+  color: var(--text-coffee);
+  border-color: var(--text-coffee);
+}
+
+/* Bookshelf Styling */
+.bookshelf-row {
+  border-bottom: 12px solid #C4A484; /* Wood color */
+  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+  margin-bottom: 40px;
+  padding-bottom: 10px;
+  background:
+    linear-gradient(to right, 
+      rgba(255,255,255,0.1) 0%, 
+      rgba(0,0,0,0.05) 100%)
+}
+
+/* Book Cover Card Effect */
+.book-cover-card {
+  perspective: 1000px;
+}
+.book-spine-effect {
+  box-shadow: 
+    inset 3px 0 5px rgba(255,255,255,0.3),
+    inset -3px 0 5px rgba(0,0,0,0.1),
+    5px 5px 10px rgba(0,0,0,0.1);
 }
 
 /* Bootstrap Overrides */
@@ -47,12 +108,6 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-soft);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-medium);
 }
 
 .navbar {
@@ -73,8 +128,20 @@ body {
 }
 
 /* Custom Utilities */
-.text-emerald {
-  color: var(--primary-color);
+.text-coffee {
+  color: var(--text-coffee) !important;
+}
+.text-mocha {
+  color: var(--text-mocha) !important;
+}
+.bg-coffee {
+  background-color: var(--text-coffee) !important;
+}
+.bg-mocha {
+  background-color: var(--text-mocha) !important;
+}
+.text-coffee-accent {
+  color: var(--text-coffee);
 }
 .text-gold {
   color: var(--secondary-color);
@@ -103,22 +170,35 @@ body {
   padding: 2rem;
 }
 
-.btn-emerald {
-  background-color: var(--primary-color);
+.btn-coffee {
+  background-color: var(--text-coffee);
   color: white;
   border: none;
   transition: all 0.3s ease;
 }
 
-.btn-emerald:hover {
-  background-color: #065f46;
+.btn-coffee:hover {
+  background-color: var(--text-mocha);
   color: white;
   transform: translateY(-2px);
   box-shadow: var(--shadow-medium);
 }
 
-.bg-emerald-soft {
-  background-color: rgba(6, 78, 59, 0.08);
+.btn-outline-coffee {
+  color: var(--text-coffee);
+  border: 2px solid var(--text-coffee);
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-coffee:hover {
+  background-color: var(--bg-dark-beige);
+  color: var(--text-coffee);
+  border-color: var(--text-coffee);
+}
+
+.bg-coffee-soft {
+  background-color: rgba(78, 52, 46, 0.08);
 }
 
 .hover-lift {
@@ -137,4 +217,64 @@ body {
 .uppercase {
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Rustic Wood Shelf Effect */
+.rustic-wood-shelf {
+  position: relative;
+  background: #5D4037;
+  background: linear-gradient(180deg, #8D6E63 0%, #5D4037 10%, #4E342E 100%);
+  height: 18px;
+  width: 100%;
+  border-radius: 2px;
+  box-shadow: 
+    0 10px 20px rgba(0,0,0,0.3), /* Deep shadow below */
+    inset 0 2px 5px rgba(255,255,255,0.2); /* Highlight top */
+  margin-top: -10px;
+  z-index: 0;
+}
+
+/* 3D Book Container */
+.book-container-3d {
+  perspective: 1000px;
+  padding-bottom: 20px; /* Space for reflection/shadow */
+  z-index: 1;
+  position: relative;
+  transition: transform 0.4s ease;
+}
+
+.book-container-3d:hover {
+  transform: translateY(-8px);
+}
+
+.book-img-3d {
+  transform: rotateY(-15deg) rotateX(5deg);
+  transform-origin: left bottom;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 
+    -5px 5px 15px rgba(0,0,0,0.2),
+    -1px 2px 2px rgba(0,0,0,0.1);
+  border-left: 3px solid rgba(255,255,255,0.2); /* Spine highlight */
+}
+
+.book-container-3d:hover .book-img-3d {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.05);
+  box-shadow: 
+    0 15px 30px rgba(0,0,0,0.25),
+    0 5px 10px rgba(0,0,0,0.15);
+  border-left: 0;
+}
+
+/* Price Tag Aesthetic */
+.price-tag-rustic {
+  font-family: var(--font-cute);
+  color: #3E2723;
+  background-color: #E6DCCD;
+  padding: 4px 12px;
+  border-radius: 12px; /* Softer corners */
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0px;
+  border: 1px solid #D7CCC8;
+  box-shadow: 1px 1px 0px #8D6E63;
 }
