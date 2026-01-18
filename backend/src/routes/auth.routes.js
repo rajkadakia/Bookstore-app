@@ -14,9 +14,8 @@ router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
-  })
+  }),
 );
-
 
 router.get(
   "/google/callback",
@@ -25,17 +24,12 @@ router.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
-    const token = jwt.sign(
-      { userId: req.user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
-    );
+    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
 
-
-    res.redirect(`http://localhost:5174/login?token=${token}`);
-  }
+    res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
+  },
 );
-
-
 
 module.exports = router;
