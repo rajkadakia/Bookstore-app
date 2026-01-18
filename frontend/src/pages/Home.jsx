@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import api from '../api/client';
 import { useCart } from '../context/CartContext';
 import { ArrowRight, BookOpen, Coffee, Feather, Trophy, Award, Package, Globe, Sparkles, Smile, Zap, Book, Plus } from 'lucide-react';
@@ -21,7 +21,7 @@ const FeaturedCarousel = () => {
   
   const banners = [
     {
-      img: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=1200&h=400', // Clear Library/Book image
+      img: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=1200&h=400', 
       title: 'Summer Reading Sale',
       text: 'Up to 50% off on all bestsellers.'
     },
@@ -41,7 +41,7 @@ const FeaturedCarousel = () => {
       text: 'Revisit the timeless stories you love.'
     },
     {
-      img: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&q=80&w=1200&h=400', // Hand holding book/Garden
+      img: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&q=80&w=1200&h=400', 
       title: 'Gift Guides',
       text: 'Perfect presents for the bookworms in your life.'
     }
@@ -72,12 +72,12 @@ const FeaturedCarousel = () => {
                className="w-100 h-100" 
                style={{ objectFit: 'cover' }} 
              />
-             {/* Gradient Overlay for Text Readability - Dark Brown to Transparent */}
+
              <div className="position-absolute top-0 start-0 w-100 h-100" 
                   style={{ background: 'linear-gradient(90deg, rgba(62, 39, 35, 0.95) 0%, rgba(62, 39, 35, 0.5) 50%, rgba(62, 39, 35, 0) 100%)' }}>
              </div>
              
-             {/* Text Content Overlay */}
+
              <div className="position-absolute top-50 start-0 translate-middle-y ps-5 text-white" style={{ maxWidth: '600px', zIndex: 2 }}>
                 <h2 className="display-4 font-serif fw-bold mb-2 text-shadow" style={{ color: '#F9F5F0' }}>{banner.title}</h2>
                 <p className="lead font-serif fst-italic opacity-100 text-shadow-sm" style={{ fontWeight: 300, color: '#E6DCCD' }}>{banner.text}</p>
@@ -87,7 +87,7 @@ const FeaturedCarousel = () => {
         ))}
       </div>
       
-      {/* Dots Indicator */}
+
       <div className="position-absolute bottom-0 start-50 translate-middle-x mb-3 d-flex gap-2" style={{ zIndex: 3 }}>
         {banners.map((_, idx) => (
           <button 
@@ -105,11 +105,14 @@ const FeaturedCarousel = () => {
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
 
   useEffect(() => {
     const fetchBooks = async () => {
+      setLoading(true);
       try {
-        const response = await api.get('/books');
+        const response = await api.get(`/books${searchQuery ? `?search=${searchQuery}` : ''}`);
         const booksData = response.data.data || (Array.isArray(response.data) ? response.data : []);
         setBooks(booksData);
       } catch (error) {
@@ -119,11 +122,11 @@ const Home = () => {
       }
     };
     fetchBooks();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div className="home-container" style={{ paddingBottom: '100px' }}>
-      {/* Minmalist Welcome Header */}
+
       <section className="text-center py-5 mb-4">
         <div className="container">
           <BookOpen strokeWidth={1} size={48} className="text-coffee mb-3 opacity-50" />
@@ -132,9 +135,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Categories & Carousel Section */}
+
       <section className="container mb-5">
-        {/* Category Icons Bar */}
+
         <div className="d-flex flex-wrap justify-content-center justify-content-lg-between mb-5 py-3 border-top border-bottom" style={{ borderColor: 'var(--bg-dark-beige)' }}>
           <CategoryIcon icon={Trophy} label="Best Seller" to="/books#best-seller" />
           <CategoryIcon icon={Award} label="Award Winners" to="/books#award-winners" />
@@ -143,11 +146,11 @@ const Home = () => {
           <CategoryIcon icon={Sparkles} label="New Arrivals" to="/books#new-arrivals" />
         </div>
 
-        {/* Auto-Sliding Carousel */}
+
         <FeaturedCarousel />
       </section>
 
-      {/* The Bookshelf Grid */}
+
       <section className="container">
         {loading ? (
            <div className="text-center py-5">
@@ -204,7 +207,7 @@ const ShelfItem = ({ book }) => {
           )}
         </Link>
         
-        {/* Floating Add to Cart Button - Adjusted position */}
+
         <button 
            className="btn btn-sm position-absolute bottom-0 end-0 mb-3 me-n2 d-flex align-items-center justify-content-center shadow-sm"
            onClick={handleAddToCart}
@@ -224,10 +227,10 @@ const ShelfItem = ({ book }) => {
         </button>
       </div>
 
-      {/* The Realistic Wood Shelf */}
+
       <div className="rustic-wood-shelf mx-auto" style={{ maxWidth: '90%' }}></div>
       
-      {/* Visual Info Card below shelf */}
+
       <div className="pt-3 text-center">
         <h3 className="h6 font-serif fw-bold text-coffee mb-2 text-truncate px-1" style={{ letterSpacing: '0.5px' }}>{book.title}</h3>
         <div className="d-flex align-items-center justify-content-center gap-3">

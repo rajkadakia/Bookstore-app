@@ -9,13 +9,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      // Check for token in URL (from Google OAuth redirect)
+
       const urlParams = new URLSearchParams(window.location.search);
       const urlToken = urlParams.get('token');
       
       if (urlToken) {
         localStorage.setItem('token', urlToken);
-        // Clean URL
+
         window.history.replaceState({}, document.title, window.location.pathname);
       }
 

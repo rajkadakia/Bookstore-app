@@ -2,7 +2,7 @@ const Review = require("../models/review.model");
 const Book = require("../models/book.model");
 const { getCache, setCache } = require("../utils/cache");
 
-const REVIEWS_CACHE_TTL = 300; // 5 minutes
+const REVIEWS_CACHE_TTL = 300; 
 
 const { deleteCache } = require("../utils/cache");
 

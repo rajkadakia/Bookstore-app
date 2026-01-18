@@ -35,7 +35,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
-    // Client-side validation: Check current quantity in cart
+
     const existingItem = cart?.items?.find(item => (item.bookId?._id || item.bookId) === bookId);
     const currentQty = existingItem ? existingItem.quantity : 0;
     

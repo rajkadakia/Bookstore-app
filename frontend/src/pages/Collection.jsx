@@ -11,12 +11,12 @@ const CollectionCard = ({ title, image, size = "normal", delay = 0, id }) => {
         className="w-100 h-100 object-fit-cover transition-transform"
         style={{ transition: 'transform 0.8s ease' }}
       />
-      {/* Gradient Overlay */}
+
       <div className="position-absolute top-0 start-0 w-100 h-100" 
            style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(62, 39, 35, 0.8) 100%)' }}>
       </div>
       
-      {/* Content */}
+
       <div className="position-absolute bottom-0 start-0 p-4 w-100">
         <h3 className={`font-serif fw-bold mb-3 ${size === 'large' ? 'display-6' : 'h4'}`} style={{ color: '#F9F5F0' }}>{title}</h3>
         <button className="btn btn-outline-light rounded-pill custom-btn-sm fw-semibold d-flex align-items-center gap-2" style={{ borderColor: '#F9F5F0', color: '#F9F5F0' }}>
@@ -45,15 +45,15 @@ const Collection = () => {
 
   return (
     <div className="container py-5 mt-5">
-      {/* Header */}
+
       <div className="text-center mb-5 fade-in-up">
         <h1 className="display-4 font-serif fw-bold text-coffee mb-3">Get Inspired</h1>
         <p className="lead text-muted fst-italic">Explore our curated collections for every mood.</p>
       </div>
 
-      {/* Magazine Grid Layout */}
+
       <div className="row g-4 mb-4">
-        {/* Top Left - Large: Best Sellers */}
+
         <div className="col-lg-7 fade-in-up">
           <div style={{ height: '350px' }}>
             <CollectionCard 
@@ -66,7 +66,7 @@ const Collection = () => {
           </div>
         </div>
         
-        {/* Top Right - Large: New Arrivals */}
+
         <div className="col-lg-5 fade-in-up">
           <div style={{ height: '350px' }}>
             <CollectionCard 
@@ -80,7 +80,7 @@ const Collection = () => {
       </div>
 
       <div className="row g-4">
-        {/* Bottom Left - Wide: Award Winners */}
+
         <div className="col-lg-4 col-md-6 fade-in-up">
            <div style={{ height: '350px' }}>
              <CollectionCard 
@@ -92,7 +92,7 @@ const Collection = () => {
            </div>
         </div>
 
-        {/* Bottom Mid - Small: Box Sets */}
+
         <div className="col-lg-4 col-md-6 fade-in-up">
            <div style={{ height: '350px' }}>
              <CollectionCard 
@@ -104,7 +104,7 @@ const Collection = () => {
            </div>
         </div>
 
-        {/* Bottom Right - Small: International */}
+
         <div className="col-lg-4 col-md-12 fade-in-up">
            <div style={{ height: '350px' }}>
              <CollectionCard 
@@ -117,7 +117,7 @@ const Collection = () => {
         </div>
       </div>
       
-      {/* Footer Quote */}
+
       <div className="text-center mt-5 pt-5 border-top border-opacity-10 opacity-75">
          <BookOpen size={32} className="text-coffee mb-3 opacity-50" />
          <p className="font-serif fst-italic fs-5 text-muted">"A room without books is like a body without a soul."</p>

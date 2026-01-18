@@ -31,7 +31,7 @@ router.get(
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    // Redirect to frontend with token
+
     res.redirect(`http://localhost:5174/login?token=${token}`);
   }
 );

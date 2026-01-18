@@ -44,14 +44,14 @@ const Login = () => {
     <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center p-4">
       <div className="row w-100 shadow-book rounded-4 overflow-hidden" style={{ maxWidth: '1000px', minHeight: '600px' }}>
         
-        {/* Left Side: The "Book Cover" */}
+
         <div className="col-md-6 d-none d-md-flex flex-column justify-content-center align-items-center text-center p-5 text-white position-relative" 
              style={{ 
                background: '#4E342E', 
                backgroundImage: 'linear-gradient(45deg, #3E2723 0%, #5D4037 100%)',
                borderRight: '4px solid #3E2723' 
              }}>
-          {/* Simple Decorative Border */}
+
           <div className="position-absolute top-0 start-0 w-100 h-100 border border-secondary border-opacity-25 m-3 rounded-3" style={{ pointerEvents: 'none' }}></div>
           
           <div className="mb-4">
@@ -64,7 +64,7 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Right Side: The "Paper" Form */}
+
         <div className="col-md-6 bg-white p-5 d-flex align-items-center position-relative">
           <div className="w-100" style={{ maxWidth: '400px', margin: '0 auto' }}>
             <h2 className="text-coffee font-serif fw-bold mb-4">Welcome Back</h2>

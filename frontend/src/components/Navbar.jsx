@@ -2,11 +2,22 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { ShoppingCart, User, LogOut, BookOpen } from 'lucide-react';
+import React, { useState } from 'react';
 
 const Navbar = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const { user, logout } = useAuth();
   const { cartCount } = useCart();
   const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/home?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate('/home');
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -20,7 +31,7 @@ const Navbar = () => {
           <span className="display-6 fw-bold brand-font text-coffee" style={{ letterSpacing: '-1px' }}>किताबkhana</span>
         </Link>
         
-        {/* Only show full nav if NOT on login/register pages */}
+
         {!['/login', '/register', '/'].includes(window.location.pathname) && (
           <>
             <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -28,21 +39,23 @@ const Navbar = () => {
             </button>
             
             <div className="collapse navbar-collapse" id="navbarNav">
-              {/* Minimal Search */}
+
               <div className="mx-auto col-lg-4 d-none d-lg-block">
-                 <div className="pb-1 d-flex" style={{ borderBottom: '1.5px solid #4E342E' }}>
+                 <form onSubmit={handleSearch} className="pb-1 d-flex" style={{ borderBottom: '1.5px solid #4E342E' }}>
                    <input 
                       type="text" 
                       className="form-control border-0 bg-transparent p-0 shadow-none text-coffee" 
                       placeholder="Search for your next read..." 
                       style={{ fontStyle: 'italic' }}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                    />
-                   <button className="btn p-0 text-coffee">
+                   <button type="submit" className="btn p-0 text-coffee">
                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                      </svg>
                    </button>
-                 </div>
+                 </form>
               </div>
 
               <ul className="navbar-nav ms-auto align-items-center gap-4">

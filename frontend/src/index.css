@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Quicksand:wght@400;500;600;700&display=swap");
 
 :root {
-  --bg-beige: #F9F5F0;     /* Light Cream/Paper */
-  --bg-dark-beige: #E6DCCD; /* Darker Beige for accents */
-  --text-coffee: #4E342E;   /* Deep Brown text */
-  --text-mocha: #795548;    /* Lighter brown for secondary text */
-  --accent-sage: #8D6E63;   /* Muted earthy accent */
-  --wood-texture: #D7CCC8;  /* For bookshelf borders */
+  --bg-beige: #F9F5F0;     
+  --bg-dark-beige: #E6DCCD; 
+  --text-coffee: #4E342E;   
+  --text-mocha: #795548;    
+  --accent-sage: #8D6E63;   
+  --wood-texture: #D7CCC8;  
   --paper-white: #FFFFFF;
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", sans-serif;
   --font-cute: "Quicksand", sans-serif;
-  --shadow-book: 5px 5px 15px rgba(62, 39, 35, 0.15); /* Soft book shadow */
+  --shadow-book: 5px 5px 15px rgba(62, 39, 35, 0.15); 
 }
 
 body {
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   letter-spacing: -0.5px;
 }
 
-/* Cozy Buttons */
+
 .btn-primary {
   background-color: var(--text-coffee);
   border-color: var(--text-coffee);
@@ -57,9 +57,9 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   border-color: var(--text-coffee);
 }
 
-/* Bookshelf Styling */
+
 .bookshelf-row {
-  border-bottom: 12px solid #C4A484; /* Wood color */
+  border-bottom: 12px solid #C4A484; 
   box-shadow: 0 5px 10px rgba(0,0,0,0.05);
   margin-bottom: 40px;
   padding-bottom: 10px;
@@ -69,7 +69,7 @@ h1, h2, h3, h4, h5, h6, .brand-font {
       rgba(0,0,0,0.05) 100%)
 }
 
-/* Book Cover Card Effect */
+
 .book-cover-card {
   perspective: 1000px;
 }
@@ -80,7 +80,7 @@ h1, h2, h3, h4, h5, h6, .brand-font {
     5px 5px 10px rgba(0,0,0,0.1);
 }
 
-/* Bootstrap Overrides */
+
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
@@ -127,7 +127,7 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   color: var(--primary-color) !important;
 }
 
-/* Custom Utilities */
+
 .text-coffee {
   color: var(--text-coffee) !important;
 }
@@ -219,7 +219,7 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   letter-spacing: 0.05em;
 }
 
-/* Rustic Wood Shelf Effect */
+
 .rustic-wood-shelf {
   position: relative;
   background: #5D4037;
@@ -228,16 +228,16 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   width: 100%;
   border-radius: 2px;
   box-shadow: 
-    0 10px 20px rgba(0,0,0,0.3), /* Deep shadow below */
-    inset 0 2px 5px rgba(255,255,255,0.2); /* Highlight top */
+    0 10px 20px rgba(0,0,0,0.3), 
+    inset 0 2px 5px rgba(255,255,255,0.2); 
   margin-top: -10px;
   z-index: 0;
 }
 
-/* 3D Book Container */
+
 .book-container-3d {
   perspective: 1000px;
-  padding-bottom: 20px; /* Space for reflection/shadow */
+  padding-bottom: 20px; 
   z-index: 1;
   position: relative;
   transition: transform 0.4s ease;
@@ -254,7 +254,7 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   box-shadow: 
     -5px 5px 15px rgba(0,0,0,0.2),
     -1px 2px 2px rgba(0,0,0,0.1);
-  border-left: 3px solid rgba(255,255,255,0.2); /* Spine highlight */
+  border-left: 3px solid rgba(255,255,255,0.2); 
 }
 
 .book-container-3d:hover .book-img-3d {
@@ -265,13 +265,13 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   border-left: 0;
 }
 
-/* Price Tag Aesthetic */
+
 .price-tag-rustic {
   font-family: var(--font-cute);
   color: #3E2723;
   background-color: #E6DCCD;
   padding: 4px 12px;
-  border-radius: 12px; /* Softer corners */
+  border-radius: 12px; 
   font-weight: 600;
   font-size: 0.9rem;
   letter-spacing: 0px;

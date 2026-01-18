@@ -109,35 +109,10 @@ const Cart = () => {
                 <span className="fw-bold">₹{shippingFee}</span>
               </div>
 
-              {/* Compact Offers Carousel */}
-              <div className="my-3 py-1 px-2 rounded-2 position-relative overflow-hidden" 
-                   style={{ backgroundColor: 'var(--bg-beige)', border: '1px dashed var(--text-mocha)', opacity: '0.9' }}>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center flex-grow-1 overflow-hidden">
-                    <div className="bg-coffee text-white p-1 rounded-circle me-2 flex-shrink-0 d-flex align-items-center justify-content-center" style={{ width: '24px', height: '24px' }}>
-                      {React.createElement(offers[offerIndex].icon, { size: 14 })}
-                    </div>
-                    <div className="overflow-hidden">
-                      <div className="text-coffee fw-bold text-truncate" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>{offers[offerIndex].title}</div>
-                      <div className="text-muted text-truncate" style={{ fontSize: '0.65rem', lineHeight: '1' }}>{offers[offerIndex].desc}</div>
-                    </div>
-                  </div>
-                  <button className="btn btn-sm btn-outline-coffee rounded-pill px-2 py-0 ms-2 fw-bold" style={{ fontSize: '0.6rem', height: '20px' }}>
-                    VIEW
-                  </button>
-                </div>
-                {/* Micro Progress dots */}
-                <div className="d-flex justify-content-center gap-1 mt-1">
-                  {offers.map((_, i) => (
-                    <div key={i} className={`rounded-circle ${i === offerIndex ? 'bg-coffee' : 'bg-mocha opacity-25'}`} 
-                         style={{ width: '3px', height: '3px', transition: 'all 0.3s' }} />
-                  ))}
-                </div>
-              </div>
               <hr className="my-4" style={{ opacity: '0.1' }} />
               <div className="d-flex justify-content-between mb-5">
-                <span className="fs-5 fw-bold">Total</span>
-                <span className="fs-4 fw-bold">₹{totalPrice}</span>
+                <div className="fs-5 fw-bold text-coffee">Total</div>
+                <div className="fs-4 fw-bold text-coffee">₹{totalPrice}</div>
               </div>
               
               <div className="d-flex justify-content-center">

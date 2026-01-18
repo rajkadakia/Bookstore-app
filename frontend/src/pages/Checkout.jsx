@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import api from '../api/client';
-import { CreditCard, Lock, CheckCircle, ArrowLeft, ShoppingBag, MapPin } from 'lucide-react';
+import { CreditCard, Lock, CheckCircle, ArrowLeft, ShoppingBag, MapPin, Banknote, Smartphone, Send } from 'lucide-react';
 import AddressManager from '../components/AddressManager';
 
 const Checkout = () => {
@@ -10,6 +10,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const navigate = useNavigate();
 
   const cartItems = cart?.items || [];
@@ -42,7 +43,7 @@ const Checkout = () => {
             <CheckCircle className="text-coffee" size={64} />
           </div>
           <h2 className="fw-bold mb-3">Order Placed Successfully!</h2>
-          <p className="text-muted mb-5">Your books are being prepared for shipment. Thank you for choosing Ink & Soul.</p>
+          <p className="text-muted mb-5">Your books are being prepared for shipment. Thank you for choosing किताबkhana.</p>
           <button className="btn btn-coffee px-5 py-3 rounded-pill fw-bold" onClick={() => navigate('/')}>
             Continue Shopping
           </button>
@@ -80,47 +81,44 @@ const Checkout = () => {
 
           <div className="card border-0 shadow-sm p-4 bg-white rounded-4">
             <h4 className="fw-bold mb-4 d-flex align-items-center text-coffee font-serif">
-              <CreditCard className="text-coffee me-2" size={24} /> Payment Information
+              <CreditCard className="text-coffee me-2" size={24} /> Select Payment Method
             </h4>
             
+            <div className="row g-3 mb-4">
+              {[
+                { id: 'cod', name: 'Cash on Delivery', icon: <Banknote size={20} /> },
+                { id: 'upi', name: 'UPI Payment', icon: <Smartphone size={20} /> },
+                { id: 'card', name: 'Card Payment', icon: <CreditCard size={20} /> },
+                { id: 'transfer', name: 'Account Transfer', icon: <Send size={20} /> },
+              ].map((method) => (
+                <div key={method.id} className="col-6">
+                  <div 
+                    className={`p-3 border rounded-3 text-center cursor-pointer transition-all ${paymentMethod === method.id ? 'border-coffee bg-coffee-light' : 'border-light font-serif'}`}
+                    style={{ 
+                      cursor: 'pointer',
+                      backgroundColor: paymentMethod === method.id ? '#F9F5F0' : 'white',
+                      borderColor: paymentMethod === method.id ? 'var(--text-coffee)' : 'rgba(0,0,0,0.1)'
+                    }}
+                    onClick={() => setPaymentMethod(method.id)}
+                  >
+                    <div className={`mb-2 ${paymentMethod === method.id ? 'text-coffee' : 'text-muted'}`}>
+                      {method.icon}
+                    </div>
+                    <div className={`x-small fw-bold ${paymentMethod === method.id ? 'text-coffee' : 'text-muted'}`}>
+                      {method.name}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <form onSubmit={handlePlaceOrder}>
-              <div className="mb-4">
-                <label className="form-label small fw-bold text-muted uppercase">Cardholder Name</label>
-                <input type="text" className="form-control py-3" placeholder="Name" required />
-              </div>
-
-              <div className="mb-4">
-                <label className="form-label small fw-bold text-muted uppercase">Card Number</label>
-                <div className="input-group">
-                  <span className="input-group-text bg-transparent border-end-0">
-                    <Lock size={16} className="text-muted" />
-                  </span>
-                  <input type="text" className="form-control py-3 border-start-0 ps-0" placeholder="0000 0000 0000 0000" required />
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-md-6 mb-4">
-                  <label className="form-label small fw-bold text-muted uppercase">Expiry Date</label>
-                  <input type="text" className="form-control py-3" placeholder="MM/YY" required />
-                </div>
-                <div className="col-md-6 mb-4">
-                  <label className="form-label small fw-bold text-muted uppercase">CVV</label>
-                  <input type="password" size="3" className="form-control py-3" placeholder="•••" required />
-                </div>
-              </div>
-
-              <div className="bg-light p-3 rounded-3 mb-4 d-flex align-items-center">
-                <Lock size={16} className="text-coffee me-2" />
-                <span className="small text-muted">Your payment information is encrypted and secure.</span>
-              </div>
-
               <button 
                 type="submit" 
-                className="btn btn-coffee w-100 py-3 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center"
+                className="btn btn-coffee w-100 py-3 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center mt-3"
                 disabled={loading}
               >
-                {loading ? 'Processing...' : `Confirm Payment: ₹${totalPrice}`}
+                {loading ? 'Processing...' : `Confirm Order: ₹${totalPrice + 50}`}
               </button>
             </form>
           </div>
@@ -164,8 +162,8 @@ const Checkout = () => {
             </div>
 
             <div className="d-flex justify-content-between mb-0 border-top pt-4">
-              <h5 className="fw-bold">Total</h5>
-              <h4 className="fw-bold text-coffee">₹{totalPrice + 50}</h4>
+              <div className="fw-bold text-coffee fs-5" style={{ letterSpacing: '0.5px' }}>Total Amount</div>
+              <div className="fw-bold text-coffee fs-4">₹{totalPrice + 50}</div>
             </div>
           </div>
         </div>

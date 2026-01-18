@@ -2,7 +2,8 @@ const bookService = require("../services/book.service");
 
 const getBooks = async (req, res) => {
   try {
-    const books = await bookService.getAllBooks();
+    const { search } = req.query;
+    const books = await bookService.getAllBooks(search);
     res.json(books);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch books" });
