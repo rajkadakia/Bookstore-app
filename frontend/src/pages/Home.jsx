@@ -50,7 +50,7 @@ const FeaturedCarousel = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % banners.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, [banners.length]);
 
@@ -182,7 +182,7 @@ const ShelfItem = ({ book }) => {
 
   const handleAddToCart = (e) => {
     e.preventDefault(); 
-    addToCart(book);
+    addToCart(book?._id || book?.id);
   };
 
   return (

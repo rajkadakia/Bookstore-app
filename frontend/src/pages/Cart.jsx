@@ -25,7 +25,7 @@ const Cart = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setOfferIndex((prev) => (prev + 1) % offers.length);
-    }, 3000);
+    }, 2000);
     return () => clearInterval(timer);
   }, []);
 
@@ -151,9 +151,34 @@ const Cart = () => {
           <div className="col-lg-4">
             <div className="card border-0 shadow-sm p-4 sticky-top overflow-hidden bg-white text-coffee rounded-4" style={{ top: '100px', border: '1px solid #E6DCCD' }}>
               <h4 className="fw-bold mb-4 font-serif">Order Summary</h4>
-              <div className="d-flex justify-content-between mb-3">
-                <span className="opacity-75">Subtotal</span>
-                <span className="fw-bold">₹{subtotal}</span>
+              
+              <div className="cart-items-summary mb-4">
+                {cartItems.length > 1 ? (
+                  <>
+                    {cartItems.map((item) => (
+                      <div key={`summary-${item.bookId?._id}`} className="d-flex justify-content-between mb-2 small">
+                        <span className="text-muted">
+                          {item.bookId?.title} 
+                          <span className="ms-1 opacity-75">({item.quantity} × ₹{item.bookId?.price || 0})</span>
+                        </span>
+                        <span className="fw-semibold text-coffee">₹{(item.bookId?.price || 0) * item.quantity}</span>
+                      </div>
+                    ))}
+                    <hr className="my-3" style={{ opacity: '0.05' }} />
+                    <div className="d-flex justify-content-between mb-3">
+                      <span className="opacity-75">Subtotal</span>
+                      <span className="fw-bold">₹{subtotal}</span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="d-flex justify-content-between mb-3">
+                    <span className="opacity-75">
+                      {cartItems[0]?.bookId?.title}
+                      <span className="ms-1 opacity-75">({cartItems[0]?.quantity} × ₹{cartItems[0]?.bookId?.price || 0})</span>
+                    </span>
+                    <span className="fw-bold text-coffee">₹{subtotal}</span>
+                  </div>
+                )}
               </div>
               <div className="d-flex justify-content-between mb-3 text-coffee">
                 <span className="opacity-75">Shipping</span>
