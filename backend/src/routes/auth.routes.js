@@ -4,9 +4,11 @@ const authController = require("../controllers/auth.controller");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
+const authMiddleware = require("../middlewares/auth.middleware");
 
 router.post("/register", authController.register);
 router.post("/login", authController.login);
+router.get("/me", authMiddleware, authController.getMe);
 
 router.get(
   "/google",
@@ -29,11 +31,8 @@ router.get(
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.json({
-      message: "Google login successful",
-      token,
-      user: req.user,
-    });
+    // Redirect to frontend with token
+    res.redirect(`http://localhost:5174/login?token=${token}`);
   }
 );
 

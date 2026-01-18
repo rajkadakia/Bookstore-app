@@ -23,6 +23,10 @@ const bookSchema = new mongoose.Schema(
       min: 0,
       max: 5,
     },
+    reviewCount: {
+      type: Number,
+      default: 0,
+    },
     imageUrl: {
   type: String,
   required: true,

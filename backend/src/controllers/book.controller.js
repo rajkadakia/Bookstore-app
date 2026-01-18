@@ -9,6 +9,19 @@ const getBooks = async (req, res) => {
   }
 };
 
+const getBookById = async (req, res) => {
+  try {
+    const book = await bookService.getBookById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+    res.json(book);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch book" });
+  }
+};
+
 module.exports = {
   getBooks,
+  getBookById,
 };

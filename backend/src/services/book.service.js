@@ -1,5 +1,5 @@
 const Book = require("../models/book.model");
-const { getCache, setCache } = require("../utils/cache");
+const { getCache, setCache, deleteCache } = require("../utils/cache");
 
 const BOOKS_CACHE_KEY = "books:all";
 const BOOKS_CACHE_TTL = 300; // 5 minutes
@@ -19,6 +19,27 @@ const getAllBooks = async () => {
   return books;
 };
 
+const getBookById = async (id) => {
+  const cacheKey = `book:${id}`;
+  const cachedBook = await getCache(cacheKey);
+  if (cachedBook) return cachedBook;
+
+  const book = await Book.findById(id);
+  if (book) {
+    await setCache(cacheKey, book, BOOKS_CACHE_TTL);
+  }
+  return book;
+};
+
+const clearBookCache = async (id = null) => {
+  await deleteCache(BOOKS_CACHE_KEY);
+  if (id) {
+    await deleteCache(`book:${id}`);
+  }
+};
+
 module.exports = {
   getAllBooks,
+  getBookById,
+  clearBookCache,
 };
