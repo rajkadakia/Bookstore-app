@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 const Cart = () => {
   const { cart, loading, removeFromCart, clearCart, addToCart } = useCart();
   const navigate = useNavigate();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   if (loading && !cart) return <div className="container py-5 mt-5 text-center"><div className="spinner-border text-coffee" /></div>;
 
@@ -30,9 +31,59 @@ const Cart = () => {
 
   return (
     <div className="container py-5 mt-5">
-      <h2 className="display-5 fw-bold mb-5 d-flex align-items-center text-coffee font-serif">
-        <ShoppingCart size={36} className="text-coffee me-3" /> Your Shopping Cart
-      </h2>
+      <div className="d-flex justify-content-between align-items-center mb-5">
+        <h2 className="display-5 fw-bold d-flex align-items-center text-coffee font-serif mb-0">
+          <ShoppingCart size={36} className="text-coffee me-3" /> Your Shopping Cart
+        </h2>
+        <button 
+          className="btn btn-outline-coffee rounded-pill px-4 d-flex align-items-center transition-all hover-lift"
+          onClick={() => setShowConfirmModal(true)}
+        >
+          <Trash2 size={18} className="me-2" /> Clear Cart
+        </button>
+      </div>
+
+      {/* Custom Confirmation Modal */}
+      {showConfirmModal && (
+        <div 
+          className="modal-backdrop d-flex align-items-center justify-content-center" 
+          style={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            width: '100%', 
+            height: '100%', 
+            backgroundColor: 'rgba(78, 52, 46, 0.2)', 
+            backdropFilter: 'blur(8px)', 
+            zIndex: 1050 
+          }}
+        >
+          <div className="card glass-card bg-white p-5 text-center shadow-lg border-0" style={{ maxWidth: '400px', borderRadius: '24px' }}>
+            <div className="bg-coffee-soft rounded-circle d-inline-flex p-4 mb-4">
+              <Trash2 size={40} className="text-coffee" />
+            </div>
+            <h3 className="fw-bold mb-3 font-serif text-coffee">Clear Entire Cart?</h3>
+            <p className="text-muted mb-4 px-3">This will remove all items from your collection. This action cannot be undone.</p>
+            <div className="d-flex gap-3 justify-content-center">
+              <button 
+                className="btn btn-light rounded-pill px-4 py-2 fw-semibold" 
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-coffee rounded-pill px-4 py-2 fw-semibold" 
+                onClick={() => {
+                  clearCart();
+                  setShowConfirmModal(false);
+                }}
+              >
+                Yes, Clear All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {cartItems.length === 0 ? (
         <div className="text-center py-5 glass-card bg-white">
