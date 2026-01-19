@@ -35,8 +35,11 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
-
-    const existingItem = cart?.items?.find(item => (item.bookId?._id || item.bookId) === bookId);
+    const bookIdStr = bookId.toString();
+    const existingItem = cart?.items?.find(item => {
+      const itemBookId = item.bookId?._id || item.bookId;
+      return itemBookId.toString() === bookIdStr;
+    });
     const currentQty = existingItem ? existingItem.quantity : 0;
     
     if (currentQty + quantity > 10) {
@@ -45,7 +48,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      await api.post('/cart/add', { bookId, quantity });
+      await api.post('/cart/add', { bookId: bookIdStr, quantity });
       await fetchCart();
     } catch (error) {
       const errorMsg = error.response?.data?.error || error.response?.data?.message;
@@ -55,6 +58,20 @@ export const CartProvider = ({ children }) => {
         console.error('Error adding to cart:', error);
         alert('Failed to add to cart');
       }
+    }
+  };
+
+  const updateQuantity = async (bookId, quantity) => {
+    if (quantity > 10) {
+      alert('Out of Stock');
+      return;
+    }
+
+    try {
+      await api.put('/cart/update', { bookId, quantity });
+      await fetchCart();
+    } catch (error) {
+      console.error('Error updating quantity:', error);
     }
   };
 
@@ -79,7 +96,7 @@ export const CartProvider = ({ children }) => {
   const cartCount = cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
   return (
-    <CartContext.Provider value={{ cart, loading, addToCart, removeFromCart, clearCart, cartCount, fetchCart }}>
+    <CartContext.Provider value={{ cart, loading, addToCart, removeFromCart, clearCart, cartCount, fetchCart, updateQuantity }}>
       {children}
     </CartContext.Provider>
   );

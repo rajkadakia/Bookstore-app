@@ -44,9 +44,24 @@ const clearCart = async (req, res) => {
   }
 };
 
+const updateQuantity = async (req, res) => {
+  try {
+    const { bookId, quantity } = req.body;
+    const cart = await cartService.updateQuantity(
+      req.userId,
+      bookId,
+      quantity
+    );
+    res.json(cart);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getCart,
   addToCart,
   removeFromCart,
   clearCart,
+  updateQuantity,
 };

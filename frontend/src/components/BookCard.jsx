@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Star } from 'lucide-react';
+import { ShoppingCart, Star, Heart, BookOpen } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 
 const BookCard = ({ book, isNew, isSale }) => {
   const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
   const [imgError, setImgError] = useState(false);
+
+  const wishlisted = isWishlisted(book._id);
 
   return (
     <div className="col-md-3 col-6 mb-4">
@@ -21,6 +25,18 @@ const BookCard = ({ book, isNew, isSale }) => {
                 />
              </div>
           </Link>
+          
+          <button 
+            className="position-absolute top-0 start-0 m-2 border-0 bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+            style={{ width: '32px', height: '32px', zIndex: 2 }}
+            onClick={(e) => {
+              e.preventDefault();
+              toggleWishlist(book);
+            }}
+          >
+            <Heart size={18} fill={wishlisted ? "#A94442" : "none"} color={wishlisted ? "#A94442" : "#999"} />
+          </button>
+
           {isNew && <span className="position-absolute top-0 end-0 m-2 badge bg-coffee text-white rounded-0 fw-normal px-2" style={{backgroundColor: '#795548'}}>New</span>}
           {isSale && <span className="position-absolute top-0 end-0 m-2 badge rounded-0 fw-normal px-2" style={{backgroundColor: '#4E342E', color: '#F9F5F0'}}>-10%</span>}
         </div>

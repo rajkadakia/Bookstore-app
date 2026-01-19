@@ -1,7 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { ShoppingCart, User, LogOut, BookOpen } from 'lucide-react';
+import { ShoppingCart, User, Search } from 'lucide-react';
 import React, { useState } from 'react';
 
 const Navbar = () => {
@@ -24,85 +24,119 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  if (['/login', '/register', '/'].includes(window.location.pathname)) {
+    return null;
+  }
+
   return (
-    <nav className="navbar navbar-expand-lg sticky-top py-4" style={{ backgroundColor: 'var(--bg-beige)', borderBottom: '1px solid var(--bg-dark-beige)' }}>
-      <div className="container">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
-          <span className="display-6 fw-bold brand-font text-coffee" style={{ letterSpacing: '-1px' }}>किताबkhana</span>
+    <nav className="navbar navbar-expand-lg py-3" style={{ backgroundColor: '#A94442' }}>
+      <div className="container px-4">
+        {/* Logo */}
+        <Link className="navbar-brand d-flex align-items-center text-white" to="/home">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white" className="me-2">
+            <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+          </svg>
+          <span className="fw-bold" style={{ fontFamily: 'Roboto', fontSize: '18px' }}>Bookstore</span>
         </Link>
-        
 
-        {!['/login', '/register', '/'].includes(window.location.pathname) && (
-          <>
-            <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            
-            <div className="collapse navbar-collapse" id="navbarNav">
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="d-none d-lg-flex mx-auto" style={{ maxWidth: '500px', width: '100%' }}>
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <Search size={18} color="#999" />
+            </span>
+            <input
+              type="text"
+              className="form-control border-start-0 shadow-none"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ 
+                borderColor: '#DDD',
+                fontSize: '14px'
+              }}
+            />
+          </div>
+        </form>
 
-              <div className="mx-auto col-lg-4 d-none d-lg-block">
-                 <form onSubmit={handleSearch} className="pb-1 d-flex" style={{ borderBottom: '1.5px solid #4E342E' }}>
-                   <input 
-                      type="text" 
-                      className="form-control border-0 bg-transparent p-0 shadow-none text-coffee" 
-                      placeholder="Search for your next read..." 
-                      style={{ fontStyle: 'italic' }}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                   />
-                   <button type="submit" className="btn p-0 text-coffee">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                       <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                     </svg>
-                   </button>
-                 </form>
+        {/* Right Side Icons */}
+        <div className="d-flex align-items-center gap-4">
+          {user && (
+            <>
+              <div className="dropdown">
+                <div 
+                  className="text-white text-decoration-none d-flex flex-column align-items-center dropdown-toggle" 
+                  role="button" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false"
+                  style={{ cursor: 'pointer' }}
+                >
+                  <User size={20} />
+                  <small style={{ fontSize: '11px' }}>Profile</small>
+                </div>
+                <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style={{ fontSize: '14px', minWidth: '160px' }}>
+                  <li>
+                    <Link className="dropdown-item py-2 px-3 d-flex align-items-center gap-2" to="/profile">
+                      <User size={16} className="text-muted" /> My Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item py-2 px-3 d-flex align-items-center gap-2" to="/orders">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                      My Orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item py-2 px-3 d-flex align-items-center gap-2 wishlist-item" to="/wishlist">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                      Wishlist
+                    </Link>
+                  </li>
+                  <li><hr className="dropdown-divider opacity-10" /></li>
+                  <li>
+                    <button 
+                      className="dropdown-item py-2 px-3 d-flex align-items-center gap-2" 
+                      onClick={handleLogout}
+                      style={{ color: '#A94442', fontWeight: '500' }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
               </div>
 
-              <ul className="navbar-nav ms-auto align-items-center gap-4">
-                <li className="nav-item">
-                  <Link className="nav-link text-coffee fw-semibold" to="/home">Home</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link text-coffee fw-semibold" to="/books">Collection</Link>
-                </li>
-                
-                  <Link className="text-coffee position-relative d-flex align-items-center" to="/cart" style={{ color: 'var(--text-coffee)' }}>
-                    <ShoppingCart size={22} strokeWidth={1.5} style={{ color: 'var(--text-coffee)' }} />
-                    {cartCount > 0 && (
-                      <span className="position-absolute translate-middle rounded-circle" style={{ 
-                        backgroundColor: '#795548', 
-                        top: '4px',
-                        left: '100%',
-                        width: '8px',
-                        height: '8px',
-                        transform: 'translate(-50%, -50%)',
-                        border: '1.5px solid var(--bg-beige)'
-                      }}></span>
-                    )}
-                  </Link>
+              <style>{`
+                .dropdown-item:active {
+                  background-color: #A94442 !important;
+                }
+                .dropdown-item:hover {
+                  background-color: #FFF5F5;
+                  color: #A94442 !important;
+                }
+                .dropdown-item:hover .text-muted {
+                  color: #A94442 !important;
+                }
+              `}</style>
 
-                {user ? (
-                  <>
-                    <li className="nav-item">
-                      <Link className="nav-link text-coffee p-0 d-flex align-items-center" to="/profile">
-                        <User size={20} strokeWidth={1.5} />
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                        <button className="btn text-coffee p-0" onClick={handleLogout}>
-                          <LogOut size={20} strokeWidth={1.5} />
-                        </button>
-                    </li>
-                  </>
-                ) : (
-                  <li className="nav-item">
-                    <Link className="btn btn-outline-coffee btn-sm px-4 rounded-pill" to="/login">Sign In</Link>
-                  </li>
+              <Link to="/cart" className="text-white text-decoration-none d-flex flex-column align-items-center position-relative">
+                <ShoppingCart size={20} />
+                {cartCount > 0 && (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '10px' }}>
+                    {cartCount}
+                  </span>
                 )}
-              </ul>
-            </div>
-          </>
-        )}
+                <small style={{ fontSize: '11px' }}>Cart</small>
+              </Link>
+            </>
+          )}
+
+          {!user && (
+            <Link to="/login" className="btn btn-sm btn-light">
+              Login
+            </Link>
+          )}
+        </div>
       </div>
     </nav>
   );

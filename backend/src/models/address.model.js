@@ -29,7 +29,12 @@ const addressSchema = new mongoose.Schema(
     },
     pincode: {
       type: String,
-      required: true,
+      required: false,
+    },
+    addressType: {
+      type: String,
+      enum: ["Home", "Work", "Other"],
+      default: "Home",
     },
     isDefault: {
       type: Boolean,

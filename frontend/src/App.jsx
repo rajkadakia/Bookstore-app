@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
 import Navbar from './components/Navbar';
 import { Instagram, Github, Linkedin } from 'lucide-react';
 import Home from './pages/Home';
@@ -12,14 +13,19 @@ import Collection from './pages/Collection';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
+import OrderSuccess from './pages/OrderSuccess';
+import Wishlist from './pages/Wishlist';
+import Orders from './pages/Orders';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './index.css';
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Router>
+        <WishlistProvider>
+          <Router>
           <div className="app-wrapper min-vh-100 d-flex flex-column">
             <Navbar />
             <main className="flex-grow-1">
@@ -32,7 +38,10 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-success" element={<OrderSuccess />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/orders" element={<Orders />} />
               </Routes>
             </main>
             <footer className="py-4 bg-white border-top mt-auto">
@@ -53,8 +62,9 @@ function App() {
             </footer>
           </div>
         </Router>
-      </CartProvider>
-    </AuthProvider>
+      </WishlistProvider>
+    </CartProvider>
+  </AuthProvider>
   );
 }
 

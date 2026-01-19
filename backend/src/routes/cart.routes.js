@@ -7,6 +7,7 @@ router.use(authMiddleware);
 
 router.get("/", cartController.getCart);
 router.post("/add", cartController.addToCart);
+router.put("/update", cartController.updateQuantity);
 router.delete("/remove/:bookId", cartController.removeFromCart);
 router.delete("/clear", cartController.clearCart);
 

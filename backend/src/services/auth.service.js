@@ -43,8 +43,19 @@ const getUserById = async (userId) => {
   return await User.findById(userId).select("-password");
 };
 
+const updateUser = async (userId, updateData) => {
+  if (updateData.password) {
+    updateData.password = await bcrypt.hash(updateData.password, 10);
+  } else {
+    delete updateData.password;
+  }
+  
+  return await User.findByIdAndUpdate(userId, updateData, { new: true }).select("-password");
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUserById,
+  updateUser,
 };

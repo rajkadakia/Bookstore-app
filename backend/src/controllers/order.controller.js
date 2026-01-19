@@ -10,6 +10,16 @@ const placeOrder = async (req, res) => {
   }
 };
 
+const getUserOrders = async (req, res) => {
+  try {
+    const orders = await orderService.getUserOrders(req.userId);
+    res.json(orders);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   placeOrder,
+  getUserOrders,
 };

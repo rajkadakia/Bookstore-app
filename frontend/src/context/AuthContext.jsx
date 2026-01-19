@@ -7,34 +7,34 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchUser = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlToken = urlParams.get('token');
+    
+    if (urlToken) {
+      localStorage.setItem('token', urlToken);
+
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await api.get('/auth/me');
+      setUser(response.data.user);
+    } catch (error) {
+      console.error('Session expired transition:', error);
+      localStorage.removeItem('token');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlToken = urlParams.get('token');
-      
-      if (urlToken) {
-        localStorage.setItem('token', urlToken);
-
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await api.get('/auth/me');
-        setUser(response.data.user);
-      } catch (error) {
-        console.error('Session expired transition:', error);
-        localStorage.removeItem('token');
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchUser();
   }, []);
 
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

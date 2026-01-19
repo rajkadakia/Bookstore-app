@@ -43,6 +43,11 @@ const placeOrder = async (userId, addressId) => {
   return order;
 };
 
+const getUserOrders = async (userId) => {
+  return await Order.find({ userId }).sort({ createdAt: -1 }).populate("items.bookId");
+};
+
 module.exports = {
   placeOrder,
+  getUserOrders,
 };

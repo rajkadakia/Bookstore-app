@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/client';
 import AddressForm from './AddressForm';
-import { Plus, Edit2, Trash2, CheckCircle2, Phone } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 const AddressManager = ({ onAddressSelect, selectedId, readOnly = false }) => {
   const [addresses, setAddresses] = useState([]);
@@ -70,34 +70,22 @@ const AddressManager = ({ onAddressSelect, selectedId, readOnly = false }) => {
             {addresses.map((address) => (
               <div key={address._id} className="col-12 col-md-6">
                 <div 
-                  className={`card h-100 transition-all border-1 rounded-3 pointer-event ${selectedId === address._id ? 'border-coffee bg-coffee-light' : 'border-secondary border-opacity-10 bg-white'}`}
+                  className={`card h-100 transition-all border-1 rounded-2 pointer-event ${selectedId === address._id ? 'border-maroon' : 'border-secondary border-opacity-10 bg-white'}`}
                   style={{ 
                     cursor: readOnly ? 'default' : 'pointer',
-                    backgroundColor: selectedId === address._id ? '#F9F5F0' : 'white',
-                    borderColor: selectedId === address._id ? 'var(--text-coffee)' : 'rgba(0,0,0,0.1)'
+                    backgroundColor: selectedId === address._id ? '#FFF9F9' : 'white',
+                    borderColor: selectedId === address._id ? '#A94442' : '#EEE'
                   }}
                   onClick={() => !readOnly && onAddressSelect && onAddressSelect(address._id)}
                 >
                   <div className="card-body p-3">
-                    <div className="d-flex justify-content-between align-items-start mb-2">
-                      <div>
-                        <span className="fw-bold text-coffee">{address.name}</span>
-                        {address.isDefault && <span className="ms-2 px-2 py-0 x-small bg-coffee text-white rounded-pill">Default</span>}
-                      </div>
-                      {!readOnly && (
-                        <div className="d-flex gap-2">
-                          <button className="btn btn-link p-0 text-muted hover-text-coffee" onClick={(e) => { e.stopPropagation(); setEditingAddress(address); }}>
-                            <Edit2 size={14} />
-                          </button>
-                          <button className="btn btn-link p-0 text-muted hover-text-coffee" onClick={(e) => handleDelete(e, address._id)}>
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                      )}
+                    <div className="mb-2">
+                      <span className="fw-bold" style={{ fontSize: '15px', color: '#333' }}>{address.name}</span>
+                      {address.isDefault && <span className="ms-2 px-2 py-0 border rounded-pill" style={{ fontSize: '10px', color: '#A94442', borderColor: '#A94442' }}>Default</span>}
                     </div>
-                    <p className="small text-muted mb-1 mb-0 lh-sm">{address.street}</p>
-                    <p className="small text-muted mb-1 lh-sm">{address.city}, {address.state} - {address.pincode}</p>
-                    <p className="small text-muted mb-0 lh-sm"><Phone size={12} className="me-1" /> {address.phone}</p>
+                    <p className="small mb-1 lh-sm" style={{ fontSize: '13px' }}>{address.street}</p>
+                    <p className="small mb-1 lh-sm" style={{ fontSize: '13px' }}>{address.city}, {address.state} - {address.pincode}</p>
+                    <p className="small mb-0 lh-sm" style={{ fontSize: '13px' }}>{address.phone}</p>
                     
                     {selectedId === address._id && (
                       <div className="position-absolute top-0 end-0 m-2">
@@ -109,18 +97,7 @@ const AddressManager = ({ onAddressSelect, selectedId, readOnly = false }) => {
               </div>
             ))}
             
-            {!readOnly && (
-              <div className="col-md-6">
-                <button 
-                  className="btn btn-outline-coffee w-100 h-100 py-4 d-flex flex-column align-items-center justify-content-center gap-2 rounded-3 text-coffee opacity-75 hover-opacity-100"
-                  style={{ border: '1px solid var(--text-coffee)', minHeight: '120px', backgroundColor: 'transparent' }}
-                  onClick={() => setShowAddForm(true)}
-                >
-                  <Plus size={20} />
-                  <span className="small fw-bold text-uppercase">Add New Address</span>
-                </button>
-              </div>
-            )}
+            {/* Removed Add New Address block as requested */}
           </div>
         </>
       ) : (

@@ -18,21 +18,30 @@ const addToCart = async (userId, bookId, quantity = 1) => {
   }
 
   let cart = await Cart.findOne({ userId });
-
   if (!cart) {
     cart = await Cart.create({ userId, items: [] });
   }
 
-  const itemIndex = cart.items.findIndex(
-    (item) => item.bookId.toString() === bookId
+  const bookIdStr = bookId.toString();
+  const existingItems = cart.items.filter(
+    (item) => item.bookId.toString() === bookIdStr
   );
 
-  if (itemIndex > -1) {
-    const newQuantity = cart.items[itemIndex].quantity + quantity;
+  if (existingItems.length > 0) {
+    const totalCurrentQty = existingItems.reduce((sum, item) => sum + item.quantity, 0);
+    const newQuantity = totalCurrentQty + quantity;
+    
     if (newQuantity > 10) {
       throw new Error("Out of Stock");
     }
-    cart.items[itemIndex].quantity = newQuantity;
+
+    // Remove all existing instances of this book
+    cart.items = cart.items.filter(
+      (item) => item.bookId.toString() !== bookIdStr
+    );
+    
+    // Add single merged instance
+    cart.items.push({ bookId, quantity: newQuantity });
   } else {
     if (quantity > 10) {
       throw new Error("Out of Stock");
@@ -69,9 +78,36 @@ const clearCart = async (userId) => {
   return cart;
 };
 
+const updateQuantity = async (userId, bookId, quantity) => {
+  if (quantity < 1) {
+    return removeFromCart(userId, bookId);
+  }
+
+  const cart = await Cart.findOne({ userId });
+  if (!cart) {
+    throw new Error("Cart not found");
+  }
+
+  const bookIdStr = bookId.toString();
+  if (quantity > 10) {
+    throw new Error("Out of Stock");
+  }
+
+  // Remove all existing instances of this book and add back one with the new quantity
+  cart.items = cart.items.filter(
+    (item) => item.bookId.toString() !== bookIdStr
+  );
+  
+  cart.items.push({ bookId, quantity });
+  await cart.save();
+
+  return cart;
+};
+
 module.exports = {
   getCart,
   addToCart,
   removeFromCart,
   clearCart,
+  updateQuantity,
 };
